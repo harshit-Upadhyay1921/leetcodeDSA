@@ -1,74 +1,52 @@
-class Pair {
-    char first;
-    long second;
-    Pair(char first,long second){
-        this.first=first;
-        this.second=second;
-    }
-}
-class Solution {
-    private long dijkstra(char src,char dest,long[] dist,List<List<Pair>> adj){
-        Arrays.fill(dist,(long)(1e9));
-        dist[src-'a']=0;
-        PriorityQueue<Pair> pq = new PriorityQueue<>((x, y) -> Long.compare(x.second, y.second));
-        pq.add(new Pair(src,0));
+import java.util.*;
 
-        while(!pq.isEmpty()){
-            Pair p=pq.poll();
-            char node=p.first;
-            long dis=p.second;
-            for(Pair it:adj.get(node-'a')){
-                char adjNode=it.first;
-                long wt=it.second;
-                if(dis+wt<dist[adjNode-'a']){
-                    dist[adjNode-'a']=dis+wt;
-                    pq.add(new Pair(adjNode,dis+wt));
+class Solution {
+    private void dijkstra(int src, List<int[]>[] adj, int[] dist) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        dist[src] = 0;
+        pq.offer(new int[]{0, src});
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int d = cur[0], u = cur[1];
+
+            if (d > dist[u]) continue;
+
+            for (int[] edge : adj[u]) {
+                int v = edge[0], w = edge[1];
+                if (dist[v] > d + w) {
+                    dist[v] = d + w;
+                    pq.offer(new int[]{dist[v], v});
                 }
             }
         }
-        return dist[dest-'a'];
     }
+
     public long minimumCost(String source, String target, char[] original, char[] changed, int[] cost) {
-        // Set<Character> set = new HashSet<>();
-        // for(char ch:source.toCharArray()){
-        //     set.add(ch);
-        // }
-        // for(char ch:target.toCharArray()){
-        //     set.add(ch);
-        // }
-        int totalChars=26;
+        if (source.length() != target.length()) return -1;
 
-        List<List<Pair>> adj = new ArrayList<>();
-        for(int k=0;k<totalChars;k++){
-            adj.add(new ArrayList<>());
-        }
-        for(int k=0;k<original.length;k++){
-            char first=original[k];
-            char second=changed[k];
-            long third=cost[k];
-            adj.get(first-'a').add(new Pair(second,third));
-        }
-        long[] dist = new long[totalChars];
+        List<int[]>[] adj = new ArrayList[26];
+        for (int i = 0; i < 26; i++) adj[i] = new ArrayList<>();
 
-        long[][] dp = new long[26][26];
-        for(int i=0;i<26;i++){
-            for(int j=0;j<26;j++){
-                dp[i][j]=-1;
-            }
+        for (int i = 0; i < original.length; i++) {
+            adj[original[i] - 'a'].add(new int[]{changed[i] - 'a', cost[i]});
         }
-        long totalCost=0;
-        for(int k=0;k<source.length();k++){
-            char src=source.charAt(k);
-            char dest=target.charAt(k);
-            if(src==dest) totalCost+=0;
-            else if(dp[src-'a'][dest-'a']!=-1 && src!=dest) totalCost+=dp[src-'a'][dest-'a'];
-            else if(dp[src-'a'][dest-'a']==-1 && src!=dest){
-                long ans=dijkstra(src,dest,dist,adj);
-                if(ans==(long)(1e9)) return -1;
-                totalCost+=ans;
-                dp[src-'a'][dest-'a']=ans;
-            }
+
+        int[][] dist = new int[26][26];
+        for (int i = 0; i < 26; i++) {
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
+            dijkstra(i, adj, dist[i]);
         }
-        return totalCost;
+
+        long ans = 0;
+        for (int i = 0; i < source.length(); i++) {
+            int u = source.charAt(i) - 'a';
+            int v = target.charAt(i) - 'a';
+            if (u == v) continue;
+            if (dist[u][v] == Integer.MAX_VALUE) return -1;
+            ans += dist[u][v];
+        }
+
+        return ans;
     }
 }
