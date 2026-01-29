@@ -1,10 +1,10 @@
 class Solution {
     private int helper(String text1,String text2,int[][] dp,int i1,int i2){
         if(i1<0 || i2<0) return 0;
-        if(i1==0 && i2==0){
-            if(text1.charAt(i1)==text2.charAt(i2)) return 1;
-            return 0;
-        }
+        // if(i1==0 && i2==0){
+        //     if(text1.charAt(i1)==text2.charAt(i2)) return 1;
+        //     // return 0;
+        // }
         // if(i1==0 && i2!=0){
         //     if(text1.charAt(i1)==text2.charAt(i2)){
         //         return 1+helper(text1,text2,dp,i1,i2-1);
