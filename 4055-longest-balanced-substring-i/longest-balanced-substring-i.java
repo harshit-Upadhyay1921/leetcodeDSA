@@ -1,29 +1,19 @@
 class Solution {
-    private boolean valid(HashMap<Character, Integer> map) {
-    if (map.isEmpty()) return false;
-    if(map.size()==1) return true;
-    int firstValue = -1;
-
-    for (int value : map.values()) {
-        if (firstValue == -1) {
-            firstValue = value;
-        } else if (value != firstValue) {
-            return false;
-        }
-    }
-
-    return true;
-}
+   
 
     public int longestBalanced(String s) {
         int max=-1;
         for(int i=0;i<s.length();i++){
-            HashMap<Character,Integer> map = new HashMap<>();
+            int[] freq = new int[26];
+            int distinct=0;
+            int maxFreq=0;
             for(int j=i;j<s.length();j++){
-                char ch = s.charAt(j);
-                map.put(ch, map.getOrDefault(ch,0)+1);
-                if(valid(map)){
-                    max = Math.max(max,j-i+1);
+                int idx=s.charAt(j)-'a';
+                if(freq[idx]==0) distinct++;
+                freq[idx]++;
+                maxFreq = Math.max(maxFreq,freq[idx]);
+                if(maxFreq*distinct==(j-i+1)){
+                    max=Math.max(max,(j-i+1));
                 }
             }
             
