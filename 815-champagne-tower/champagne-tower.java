@@ -18,7 +18,7 @@ class Solution {
         // }
         // return Math.min(1.0, helper(poured,query_row,query_glass,dp));
         dp[0][0]=poured/1.0;
-        for(int i=1;i<101;i++){
+        for(int i=1;i<=query_row;i++){
             for(int j=0;j<=i;j++){
                 double leftUp = 0.0;
                 double rightUp = 0.0;
