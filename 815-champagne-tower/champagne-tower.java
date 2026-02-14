@@ -1,17 +1,21 @@
 class Solution {
+    private double helper(int poured,int r,int c,double[][] dp){
+        if(r<0 || c<0 || r<c) return 0.0;
+        if(r==0 && c==0) return poured/1.0;
+        if(dp[r][c]!=-1.0) return dp[r][c];
+        double leftUp = (helper(poured,r-1,c-1,dp)-1)/2.0;
+        double rightUp = (helper(poured,r-1,c,dp)-1)/2.0;
+        if(leftUp<0.0) leftUp=0.0;
+        if(rightUp<0.0) rightUp=0.0;
+        return dp[r][c]=leftUp+rightUp;
+    }
     public double champagneTower(int poured, int query_row, int query_glass) {
-        double[][] tower = new double[101][101];
-        tower[0][0] = poured;
-        for(int i=0;i<=query_row;i++){
-            for(int j=0;j<=i;j++){
-                if(tower[i][j]>1.0){
-                    double excess = (tower[i][j]-1.0)/2.0;
-                    tower[i][j] = 1.0;
-                    tower[i+1][j] += excess;
-                    tower[i+1][j+1] += excess;
-                }
+        double[][] dp = new double[101][101];
+        for(int i=0;i<101;i++){
+            for(int j=0;j<101;j++){
+                dp[i][j]=-1.0;
             }
         }
-        return tower[query_row][query_glass];
+        return Math.min(1.0, helper(poured,query_row,query_glass,dp));
     }
 }
