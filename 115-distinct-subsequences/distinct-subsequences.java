@@ -1,7 +1,7 @@
 class Solution {
     public int helper(String s, String t,int[][] dp,int i,int j){
         if(j<0) return 1;
-        if(i<0 || j<0) return 0;
+        if(i<0) return 0;
         // if(i==0 && j==0){
         //     if(s.charAt(i)==t.charAt(j)) return 1;
         //     return 0;
