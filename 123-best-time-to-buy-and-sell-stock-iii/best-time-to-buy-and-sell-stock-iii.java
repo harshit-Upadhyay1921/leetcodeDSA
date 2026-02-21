@@ -17,14 +17,44 @@ class Solution {
     }
     public int maxProfit(int[] prices) {
         int n=prices.length;
-        int[][][] dp = new int[n][2][3];
+        // int[][][] dp = new int[n][2][3];
+        // for(int i=0;i<n;i++){
+        //     for(int j=0;j<2;j++){
+        //         for(int c=0;c<3;c++){
+        //             dp[i][j][c]=-1;
+        //         }
+        //     }
+        // }
+        // return helper(prices,dp,0,1,2);
+        
+        //tabulation
+        int[][][] dp = new int[n+1][2][3];
+        for(int j=0;j<=1;j++){
+            for(int c=0;c<=2;c++){
+                dp[n][j][c]=0;
+            }
+        }
         for(int i=0;i<n;i++){
-            for(int j=0;j<2;j++){
-                for(int c=0;c<3;c++){
-                    dp[i][j][c]=-1;
+            dp[i][0][0]=0;
+            dp[i][1][0]=0;
+        }
+        for(int i=n-1;i>=0;i--){
+            for(int j=1;j>=0;j--){
+                for(int c=2;c>=1;c--){
+                    int profit=0;
+                    if(j==1){
+                        int take = -prices[i]+dp[i+1][0][c];
+                        int not = dp[i+1][1][c];
+                        profit = Math.max(take,not);
+                    }else{
+                        int take = prices[i]+dp[i+1][1][c-1];
+                        int not = dp[i+1][0][c];
+                        profit = Math.max(take,not);
+                    }
+                    dp[i][j][c]=profit;
                 }
             }
         }
-        return helper(prices,dp,0,1,2);
+        return dp[0][1][2];
     }
 }
