@@ -17,12 +17,30 @@ class Solution {
     }
     public int maxProfit(int[] prices, int fee) {
         int n=prices.length;
-        int[][] dp = new int[n][2];
-        for(int i=0;i<n;i++){
-            for(int j=0;j<2;j++){
-                dp[i][j]=-1;
+        // int[][] dp = new int[n][2];
+        // for(int i=0;i<n;i++){
+        //     for(int j=0;j<2;j++){
+        //         dp[i][j]=-1;
+        //     }
+        // }
+        // return helper(prices, dp, 0, 1, fee);
+        int[][] dp = new int[n+1][2];
+        for(int i=n-1;i>=0;i--){
+            for(int j=1;j>=0;j--){
+                int profit=0;
+                if(j==1){
+                    int take = -prices[i]+dp[i+1][0];
+                    int not = dp[i+1][1];
+                    profit = Math.max(take, not);
+                }
+                else{
+                    int take = prices[i]-fee+dp[i+1][1];
+                    int not = dp[i+1][0];
+                    profit = Math.max(take, not);
+                }
+                dp[i][j] = profit;
             }
         }
-        return helper(prices, dp, 0, 1, fee);
+        return dp[0][1];
     }
 }
