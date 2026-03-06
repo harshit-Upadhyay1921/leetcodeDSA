@@ -21,16 +21,14 @@ class Solution {
     public int countMaxOrSubsets(int[] nums) {
         int n=nums.length;
         int[] dp = new int[n+1];//created n+1 dp for memo, for easy convert to tabu.
-        Arrays.fill(dp,-1);
-        int maxOr = helper(nums,dp,n);
-        return findCount(nums,n,maxOr,0);
-        // dp[0]=0;
-        // for(int i=1;i<=n;i++){
-        //     int pick= nums[i-1] | dp[i-1];
-        //     int notPick = dp[i-1];
-        //     dp[i]=Math.max(pick,notPick);
-        // }
-
-        
+        // Arrays.fill(dp,-1);
+        // int maxOr = helper(nums,dp,n);
+        dp[0]=0;
+        for(int i=1;i<=n;i++){
+            int pick= nums[i-1] | dp[i-1];
+            int notPick = dp[i-1];
+            dp[i]=Math.max(pick,notPick);
+        }
+        return findCount(nums,n,dp[n],0); //dp[n] is maxOr
     }
 }
