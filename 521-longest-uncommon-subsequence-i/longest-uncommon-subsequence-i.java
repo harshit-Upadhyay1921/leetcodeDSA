@@ -11,16 +11,16 @@ class Solution {
     }
     public int findLUSlength(String a, String b) {
         int n=a.length();int m=b.length();
-        // int[][] dp = new int[n+1][m+1];
-        // for(int i=0;i<n+1;i++){
-        //     for(int j=0;j<m+1;j++){
-        //         dp[i][j]=-1;
-        //     }
-        // }
-        // int maxCommon = helper(a,b,dp,n,m);
-        // if(maxCommon==n && n==m) return -1; //
-        // return Math.max(n-maxCommon,m-maxCommon);
-        if(a.equals(b)) return -1;
+        int[][] dp = new int[n+1][m+1];
+        for(int i=0;i<n+1;i++){
+            for(int j=0;j<m+1;j++){
+                dp[i][j]=-1;
+            }
+        }
+        int maxCommon = helper(a,b,dp,n,m);
+        if(maxCommon==n && n==m) return -1;
         return Math.max(n,m);
+        // if(a.equals(b)) return -1;
+        // return Math.max(n,m);
     }
 }
