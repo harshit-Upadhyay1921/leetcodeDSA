@@ -34,18 +34,21 @@ public class Codec {
         String[] values = data.split(" ");
         TreeNode root = new TreeNode(Integer.parseInt(values[0]));
         q.add(root);
-        for(int i=1;i<values.length;i++){
+        int i=1;
+        while(i<values.length){
             TreeNode parent = q.poll();
             if(!values[i].equals("N")){
                 TreeNode left = new TreeNode(Integer.parseInt(values[i]));
                 parent.left = left;
                 q.add(left);
             }
-            if(!values[++i].equals("N")){
+            i++;
+            if(!values[i].equals("N")){
                 TreeNode right = new TreeNode(Integer.parseInt(values[i]));
                 parent.right = right;
                 q.add(right);
             }
+            i++;
         }
         return root;
     }
